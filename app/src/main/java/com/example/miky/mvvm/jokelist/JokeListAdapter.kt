@@ -1,6 +1,7 @@
 package com.example.miky.mvvm.jokelist
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,13 +33,8 @@ class JokeListAdapter(
         holder.bind(position)
     }
 
-    fun setList(list:ArrayList<Joke>) {
-        jokeList?.let {
-            it.clear()
-            it.addAll(list)
-        } ?:let {
-            jokeList = list
-        }
+    fun setList(list: ArrayList<Joke>) {
+        jokeList = list
         notifyDataSetChanged()
     }
 
@@ -51,7 +47,7 @@ class JokeListAdapter(
                 binding.idText.text = joke.id.toString()
                 binding.jokeText.text = joke.joke
                 binding.root.setOnClickListener {
-                    itemClickListener(it, position)
+                    itemClickListener(it, adapterPosition)
                 }
             }
         }
@@ -73,4 +69,3 @@ class JokeListAdapter(
         }
     }
 }
-

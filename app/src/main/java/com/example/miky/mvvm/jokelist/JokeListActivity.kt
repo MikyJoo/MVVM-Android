@@ -1,6 +1,5 @@
 package com.example.miky.mvvm.jokelist
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,21 +12,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.miky.mvvm.R
 import com.example.miky.mvvm.databinding.ActivityJokeListBinding
 
-class JokeListActivity : AppCompatActivity(), JokeListActivityInterface {
+class JokeListActivity : AppCompatActivity(), JokeListContract.View {
 
-    override lateinit var viewModel: JokeListViewModelInterface
+    override lateinit var viewModel: JokeListContract.ViewModel
     private lateinit var binding: ActivityJokeListBinding
 
     private var layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     private lateinit var adapter: JokeListAdapter
 
-    override fun getContext(): Context {
-        return this
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        JokeListCoordinator.createModule(this)
+        JokeListContract.build(this)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_joke_list)
 
@@ -50,8 +45,8 @@ class JokeListActivity : AppCompatActivity(), JokeListActivityInterface {
         viewModel.onCreate()
     }
 
-    val onClickListItem = fun(view: View, index: Int) {
-        viewModel.onClickItem(index)
+    val onClickListItem = fun(view: View, position: Int) {
+        viewModel.onClickJokeListItem(this, position)
     }
 
     var itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
@@ -63,15 +58,17 @@ class JokeListActivity : AppCompatActivity(), JokeListActivityInterface {
             target: RecyclerView.ViewHolder
         ): Boolean {
             Log.i("miky", "old:${viewHolder.adapterPosition}   new: ${target.adapterPosition}")
-
-            return adapter.changeItemPosition(viewHolder.adapterPosition, target.adapterPosition)
+            var oldPosition = viewHolder.adapterPosition
+            var newPosition = target.adapterPosition
+            return adapter.changeItemPosition(oldPosition, newPosition)
         }
 
         override fun onSwiped(
             viewHolder: RecyclerView.ViewHolder,
             direction: Int
         ) {
-            adapter.removeItem(viewHolder.adapterPosition)
+            var position = viewHolder.adapterPosition
+            adapter.removeItem(position)
         }
     })
 }
