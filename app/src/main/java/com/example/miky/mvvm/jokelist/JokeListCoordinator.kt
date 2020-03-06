@@ -1,26 +1,16 @@
 package com.example.miky.mvvm.jokelist
 
+import android.content.Context
 import android.content.Intent
+import com.example.miky.mvvm.data.Joke
 import com.example.miky.mvvm.detail.JokeDetailActivity
 
-class JokeListCoordinator private constructor(override var view: JokeListActivityInterface):
-    JokeListCoodinatorInterface {
+class JokeListCoordinator: JokeListContract.Coordinator {
 
-    var viewModel: JokeListViewModelInterface = JokeListViewModel(this)
-
-    init {
-        view.viewModel = viewModel
-    }
-
-    companion object: JokeListCoodinatorInterface.Creator {
-        override fun createModule(view: JokeListActivityInterface) {
-            JokeListCoordinator(view)
-        }
-    }
-
-    override fun startJokeDetail(index: Int) {
-        var intent = Intent(view.getContext(), JokeDetailActivity::class.java)
-        intent.putExtra("index", index)
-        view.getContext().startActivity(intent)
+    override fun presentJokeDetail(view: JokeListContract.View, joke: Joke) {
+        var context = view as Context
+        var intent = Intent(context, JokeDetailActivity::class.java)
+        intent.putExtra("joke", joke)
+        context.startActivity(intent)
     }
 }

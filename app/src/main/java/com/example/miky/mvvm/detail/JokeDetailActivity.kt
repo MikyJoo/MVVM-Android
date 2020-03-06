@@ -7,31 +7,27 @@ import androidx.lifecycle.Observer
 import com.example.miky.mvvm.R
 import com.example.miky.mvvm.databinding.ActivityJokeDetailBinding
 
-class JokeDetailActivity : AppCompatActivity(), JokeDetailActivityInterface {
+class JokeDetailActivity : AppCompatActivity(), JokeDetailContract.View {
 
-    override lateinit var viewModel: JokeDetailViewModelInterface
+    override lateinit var viewModel: JokeDetailContract.ViewModel
     private lateinit var binding: ActivityJokeDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        JokeDetailCoordinator.createModule(this)
+        JokeDetailDI.build(this)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_joke_detail)
 
-        var position = intent.getIntExtra("index", 0)
-        viewModel.setIndex(position)
-
-        viewModel.liveJokeItem.observe(this, Observer {
+        viewModel.jokeLiveData.observe(this, Observer {
             binding.idText.text = it.id.toString()
             binding.jokeText.text = it.joke
         })
 
-        binding.jokeText.setOnClickListener {
-            viewModel.refreshTest()
-        }
+//        binding.jokeText.setOnClickListener {
+//            viewModel.refreshTest()
+//        }
 
-        viewModel.onCreate()
+        viewModel.onCreate(intent)
     }
-
 
 }
