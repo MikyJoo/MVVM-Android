@@ -14,7 +14,7 @@ class JokeDetailActivity : AppCompatActivity(), JokeDetailContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        JokeDetailContract.build(this)
+        JokeDetailDI.build(this)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_joke_detail)
 

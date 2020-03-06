@@ -2,16 +2,11 @@ package com.example.miky.mvvm.jokelist
 
 import androidx.lifecycle.MutableLiveData
 import com.example.miky.mvvm.data.Joke
-import java.text.FieldPosition
 
 interface JokeListContract {
 
-    companion object Build {
-        fun build(view: View) {
-            var coordinator = JokeListCoordinator()
-            var viewModel = JokeListViewModel(coordinator)
-            view.viewModel = viewModel
-        }
+    interface DI {
+        fun build(view: View)
     }
 
     interface Coordinator {

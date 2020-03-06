@@ -22,7 +22,7 @@ class JokeListActivity : AppCompatActivity(), JokeListContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        JokeListContract.build(this)
+        JokeListDI.build(this)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_joke_list)
 
